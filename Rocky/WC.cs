@@ -1,7 +1,7 @@
 ﻿namespace Rocky
 {
     /// <summary>
-    /// WEB contances class
+    /// WEB constances class
     /// </summary>
     public static class WC
     {
