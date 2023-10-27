@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
-//not used in later versions of .NET Core
+//Not used in later versions of .NET Core
 namespace Rocky
 {
     public class Startup
