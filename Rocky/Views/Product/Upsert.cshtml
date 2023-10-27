@@ -1,0 +1,157 @@
+﻿@model Rocky.Models.ViewModels.ProductVM
+@{
+    var title = "Create Product";
+}
+@{
+    ViewData["Title"] = "Work with Prods";
+}
+
+<h1>Work with Products</h1>
+
+<form method="post" enctype="multipart/form-data">
+    @if (Model.Product.ProductId != 0)
+    {
+        title = "Edit Product";
+        <input asp-for="Product.ProductId" hidden />
+        @*<input asp-for="Product.ApplicationTypeId" hidden value="1" />*@
+    }
+
+    <div class="border p-3">
+        <div class="form-group row">
+            <h2 class="text-info pl-3">@title</h2>
+        </div>
+        <div class="row p-2">
+            <div class="col-8">
+                <div class="form-group row">
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.Name" class="text-lg-center"></label>
+                    </div>
+                    <div class="col-8 pt-2">
+                        <input asp-for="Product.Name" class="form-control" />
+                        <span asp-validation-for="Product.Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.Price" class="text-lg-center"></label>
+                    </div>
+                    <div class="col-8 pt-2">
+                        <input asp-for="Product.Price" class="form-control" />
+                        <span asp-validation-for="Product.Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.ShortDesc" class="text-lg-center"></label>
+                    </div>
+                    <div class="col-8 pt-2">
+                        <input asp-for="Product.ShortDesc" class="form-control" />
+                        <span asp-validation-for="Product.ShortDesc" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row p-2">
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.Description"></label>
+                    </div>
+                    <div class="col-8 pt2">
+                        <textarea asp-for="Product.Description" class="form-control summernote"></textarea>
+                        <span asp-validation-for="Product.Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.Image" class="text-lg-center"></label>
+                    </div>
+                    <div class="col-8 pt-2">
+                        <input type="file" name="files" id="uploadBox" multiple asp-for="Product.Image" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.CategoryId" class="text-lg-center"></label>
+                    </div>
+                    <div class="col-8 pt-2">
+                        @*                        <select asp-for="CategoryId" asp-items="@ViewBag.CategoryDropDown" class="form-control dropdown">
+                        <option selected disabled>--Select Category--</option>
+                        </select>*@
+                        <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList"
+                                class="form-control dropdown">
+                            <option selected disabled>--Select Category--</option>
+                        </select>
+                        <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="col-4 pt-2">
+                        <label asp-for="Product.ApplicationTypeId" class="text-lg-center"></label>
+                    </div>
+                    <div class="col-8 pt-2">
+                        <select asp-for="Product.ApplicationTypeId" asp-items="@Model.ApplicationTypeSelectList"
+                                class="form-control dropdown">
+                            <option selected disabled>--Select AppType--</option>
+                        </select>
+                        <span asp-validation-for="Product.ApplicationTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row p-2">
+
+                        <div class="col">
+                            @if (Model.Product.ProductId != 0)
+                            {
+                            //update
+                                <input type="submit" class="btn btn-info w-100" value="Update" />
+                            }
+                            else
+                            {
+                //create
+                                <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Create" />
+                            }
+
+                        </div>
+                        <div class="col">
+                            <a asp-action="Index" class="btn btn-success w-100">
+                                Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 img-fluid ">
+                @* Keep this empty *@
+                @if (Model.Product.ProductId != 0)
+                {
+@*                    <label class="text-lg-center">WC.ImagePath: @WC.ImagePath</label>
+                    <label asp-for="Product.Image" class="text-lg-center">@Model.Product.Image</label>*@
+                    <img src="@WC.ImagePath@Model.Product.Image" width="100%" style="border-radius:10px; border:2px solid #8062D6" />
+                    @*<img src="~/images/product/d49d9c1a-62ae-4129-b932-86e5f8326ee1.jpg" width="100 % " style="border-radius:5px; border:1px; solid #bbb" />*@
+               }
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 200
+            }
+            );
+        });
+        function validateInput() {
+            if (document.getElementById("uploadBox").value == "") {
+                Swal.fire(
+                    'Error!',
+                    'Please upload an Image!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
